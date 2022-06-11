@@ -32,7 +32,7 @@ env:
   Test_Project_Path: PrismBlankApp/PrismBlankApp.Test/PrismBlankApp.Test.csproj
   
   # OpenCoverでカバレッジ測定を行う時使用するフィルター
-  OpenCoverage_filter: +[PrismBlankApp]PrismBlankApp.ViewModels
+  OpenCoverage_filter: +[PrismBlankApp]PrismBlankApp.ViewModels.*
 
 jobs:
   #===========================================================================
