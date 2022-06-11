@@ -1,0 +1,2 @@
+# PrismBlankAppExample
+Prismを用いた空のアプリケーションの例
