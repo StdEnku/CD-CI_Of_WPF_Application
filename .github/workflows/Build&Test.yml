@@ -1,0 +1,93 @@
+name: Build&Test
+
+on:
+  push:
+    tags-ignore:
+      - 'v*'
+    branches:
+      - '**'
+    paths-ignore:
+      - '**/*.md'
+      - '**/.gitignore'
+      - '**/Doxyfile'
+  pull_request:
+    branches:
+      - '**'
+    paths-ignore:
+      - '**/*.md'
+      - '**/.gitignore'
+      - '**/Doxyfile'
+
+#==================================================
+#  ここからプロジェクトに応じて書き直してください
+#==================================================
+env:
+  # アプリケーション名
+  App_Name: PrismBlankApp
+  
+  # アプリケーションのプロジェクトファイルへのパス
+  Project_Path: PrismBlankApp/PrismBlankApp/PrismBlankApp.csproj
+  
+  # アプリケーションのテストプロジェクトへのパス
+  Test_Project_Path: PrismBlankApp/PrismBlankApp.Test/PrismBlankApp.Test.csproj
+  
+  # OpenCoverでカバレッジ測定を行う時使用するフィルター
+  OpenCoverage_filter: +[PrismBlankApp]PrismBlankApp.ViewModels
+
+jobs:
+  #===========================================================================
+  #  ここからビルドとテストを実行しカバレッジ情報をcodecovへ送信するのジョブ
+  #  pullかpull request発生で実行される。
+  #  vから始まるタグのプッシュ時は実行されない。
+  #  また、mdファイル,ワークフローファイル,.gitignoreファイル,Doxyfile
+  #  のみの変更でも実行されない。
+  #===========================================================================
+  BuildAndTest:
+    runs-on:
+      windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v1
+        with: 
+          dotnet-version: 6.0.x
+
+      - name: Build Debug
+        run: dotnet build ${{ env.Project_Path }} -c Debug
+        
+      - name: Build Release
+        run: dotnet build ${{ env.Project_Path }} -c Release
+
+      - name: Execute unit tests Debug
+        run: dotnet test -c Debug
+        
+      - name: Execute unit tests Release
+        run: dotnet test -c Release
+      
+      # 下記全てcodecovへのカバレッジ情報送信処理(codecovを使用しない場合消しても構わない)
+      - name: install OpenCover
+        run: choco install opencover.portable
+        
+      - name: Execute OpenCover
+        run: |
+          $testProject = "$(Get-Location)\${{ env.Test_Project_Path }}"
+          $filters = "${{ env.OpenCoverage_filter }}"
+          $openCoveragePath = "OpenCover.Console.exe"
+          $targetExe = "dotnet.exe"
+          $targetArgs = "test $testProject"
+          $outputFolder = "$(Get-Location)\Coverage"
+          $outputXmlPath = "$outputFolder\coverage.xml"
+          New-Item $outputFolder -type Directory -Force
+          &$openCoveragePath -register:user `
+                             -target:$targetExe `
+                             -targetargs:$targetArgs `
+                             -filter:$filters `
+                             -oldstyle `
+                             -output:$outputXmlPath
+          
+      - name: Send coverage result to codecov
+        uses: codecov/codecov-action@v2
+        with:
+          files: .\Coverage\coverage.xml

@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="PrismBlankApp.Views.InitView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"       
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:appSettings="clr-namespace:PrismBlankApp.Properties"
+             xmlns:acl="http://AnimatedContentControlLib/Wpf/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <Viewbox>
+        <Label Content="Hello World" />
+    </Viewbox>
+</UserControl>
