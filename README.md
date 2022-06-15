@@ -3,5 +3,5 @@
 
 WPFアプリケーションをGithubActionsで  
 ビルド&テストが通ったかチェックし、  
-CodeCoverでテストの網羅率のバッジを表示する例
+CodeCoverでテストの網羅率のバッジを表示する例  
 tagを指定してCD可能
