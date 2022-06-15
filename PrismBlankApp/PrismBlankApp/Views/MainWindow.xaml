@@ -13,11 +13,10 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        StateChanged="onWindowStateChanged"
-        Loaded="onWindowLoaded"
-        Closing="onWindowClosing"
-        SizeChanged="onWindowSizeChanged"
-        LocationChanged="onWindowLocationChanged"
+        Height="{Binding WindowHeight, Mode=TwoWay}"
+        Width="{Binding WindowWidth, Mode=TwoWay}"
+        Left="{Binding WindowLeft, Mode=TwoWay}"
+        Top="{Binding WindowTop, Mode=TwoWay}"
         Title="PrismApp" >
 
     <!--#region リソース-->
@@ -34,12 +33,20 @@
     </WindowChrome.WindowChrome>
     <!--#endregion-->
 
-    <!--#region 初期表示するViewの設定-->
+    <!--#region Behavior or Trigger-->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding NavigateRootRegionCommand}" 
                                    CommandParameter="{x:Static constants:ViewNames.ItitView}" />
         </i:EventTrigger>
+
+        <i:DataTrigger Value="{x:Static WindowState.Maximized}" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=WindowState}">
+            <i:ChangePropertyAction TargetName="NormalizeOrMaximizeButton" PropertyName="Content" Value="{materialDesign:PackIcon Kind=WindowRestore, Size=25}" />
+        </i:DataTrigger>
+
+        <i:DataTrigger Value="{x:Static WindowState.Normal}" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=WindowState}">
+            <i:ChangePropertyAction TargetName="NormalizeOrMaximizeButton" PropertyName="Content" Value="{materialDesign:PackIcon Kind=WindowMaximize, Size=25}" />
+        </i:DataTrigger>
     </i:Interaction.Triggers>
     <!--#endregion-->
 
@@ -99,13 +106,14 @@
                 </StackPanel.Resources>
 
                 <Button Content="{materialDesign:PackIcon Kind=WindowMinimize, Size=25}"
-                        Click="onMinimizeButtonClicked" />
+                        Command="{Binding MinimizeButtonClickedCommand}" />
 
-                <Button Name="MaximizeOrRestoreButton"
-                        Click="onMaximizeOrRestoreButtonClicked" />
+                <Button Name="NormalizeOrMaximizeButton"
+                        Content="{materialDesign:PackIcon Kind=WindowMaximize, Size=25}"
+                        Command="{Binding NormalizeOrMaximizeButtonClickedCommand}" />
 
                 <Button Content="{materialDesign:PackIcon Kind=Power, Size=25}"
-                        Click="onPowerButtonClicked" />
+                        Command="{Binding ShutdownButtonClickedCommand}" />
             </StackPanel>
         </Grid>
         <!--#endregion-->

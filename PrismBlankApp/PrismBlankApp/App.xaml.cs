@@ -1,6 +1,7 @@
 ﻿using Prism.Ioc;
 using System.Windows;
 using Constants = PrismBlankApp.Constants;
+using Services = PrismBlankApp.Services;
 using Views = PrismBlankApp.Views;
 
 namespace PrismBlankApp
@@ -25,6 +26,8 @@ namespace PrismBlankApp
         /// <param name="containerRegistry">抽象化したDIコンテナオブジェクト</param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register<Services.ITitlebarOperationService, Services.TitlebarOperationService>();
+            containerRegistry.Register<Services.ISettingsService, Services.SettingsService>();
             containerRegistry.RegisterForNavigation<Views.InitView>(Constants.ViewNames.ItitView);
         }
     }

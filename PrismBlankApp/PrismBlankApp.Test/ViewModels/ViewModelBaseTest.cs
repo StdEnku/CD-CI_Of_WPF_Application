@@ -129,7 +129,7 @@ namespace PrismBlankApp.Test.ViewModels
             viewModelBase.NavigateCommand.CanExecuteChanged += onCanExecuteChanged;
             this._regionNavigationService.Raise(m => m.Navigated += null, new RegionNavigationEventArgs(this._navigatinContext));
             viewModelBase.NavigateCommand.CanExecuteChanged -= onCanExecuteChanged;
-
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
             Assert.True(result);
         }
 
@@ -147,7 +147,7 @@ namespace PrismBlankApp.Test.ViewModels
             viewModelBase.NavigateCommand.CanExecuteChanged += onCanExecuteChanged;
             this._regionNavigationService.Raise(rng => rng.Navigated += null, new RegionNavigationEventArgs(this._navigatinContext));
             viewModelBase.NavigateCommand.CanExecuteChanged -= onCanExecuteChanged;
-
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
             Assert.False(result);
         }
 
@@ -160,6 +160,7 @@ namespace PrismBlankApp.Test.ViewModels
             var viewModelBase = this.showingStateInstanceFactory();
             viewModelBase.NavigateCommand.Execute(DUMMY_NEXT_VIEW_NAME);
             Assert.True(result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
 
         [Fact]
@@ -169,6 +170,7 @@ namespace PrismBlankApp.Test.ViewModels
             var viewModelBase = this.createdStateInstanceFactory();
             var result = viewModelBase.NavigateCommand.CanExecute(DUMMY_NEXT_VIEW_NAME);
             Assert.False(result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
 
         [Fact]
@@ -178,6 +180,7 @@ namespace PrismBlankApp.Test.ViewModels
             var viewModelBase = this.showingStateInstanceFactory();
             var result = viewModelBase.NavigateCommand.CanExecute(DUMMY_NEXT_VIEW_NAME);
             Assert.True(result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
         #endregion
 
@@ -196,8 +199,8 @@ namespace PrismBlankApp.Test.ViewModels
             viewModelBase.GoBackCommand.CanExecuteChanged += onCanExecuteChanged;
             this._regionNavigationService.Raise(rng => rng.Navigated += null, new RegionNavigationEventArgs(this._navigatinContext));
             viewModelBase.GoBackCommand.CanExecuteChanged -= onCanExecuteChanged;
-
             Assert.True(result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
 
         [Fact]
@@ -214,8 +217,8 @@ namespace PrismBlankApp.Test.ViewModels
             viewModelBase.GoBackCommand.CanExecuteChanged += onCanExecuteChanged;
             this._regionNavigationService.Raise(rng => rng.Navigated += null, new RegionNavigationEventArgs(this._navigatinContext));
             viewModelBase.GoBackCommand.CanExecuteChanged -= onCanExecuteChanged;
-
             Assert.False(result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
 
         [Fact]
@@ -224,6 +227,7 @@ namespace PrismBlankApp.Test.ViewModels
             var viewModelBase = this.showingStateInstanceFactory();
             viewModelBase.GoBackCommand.Execute();
             this._regionNavigationJournal.Verify(rnj => rnj.GoBack());
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
 
         [Fact]
@@ -231,6 +235,7 @@ namespace PrismBlankApp.Test.ViewModels
         {
             var viewModelBase = this.createdStateInstanceFactory();
             var result = viewModelBase.GoBackCommand.CanExecute();
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
             Assert.False(result);
         }
 
@@ -243,6 +248,7 @@ namespace PrismBlankApp.Test.ViewModels
             this._regionNavigationJournal.Setup(rnj => rnj.CanGoBack).Returns(canGoBackResult);
             var result = viewModelBase.GoBackCommand.CanExecute();
             Assert.Equal(canGoBackResult, result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
         #endregion
 
@@ -261,8 +267,8 @@ namespace PrismBlankApp.Test.ViewModels
             viewModelBase.GoForwardCommand.CanExecuteChanged += onCanExecuteChanged;
             this._regionNavigationService.Raise(rng => rng.Navigated += null, new RegionNavigationEventArgs(this._navigatinContext));
             viewModelBase.GoForwardCommand.CanExecuteChanged -= onCanExecuteChanged;
-
             Assert.True(result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
 
         [Fact]
@@ -279,8 +285,8 @@ namespace PrismBlankApp.Test.ViewModels
             viewModelBase.GoForwardCommand.CanExecuteChanged += onCanExecuteChanged;
             this._regionNavigationService.Raise(rng => rng.Navigated += null, new RegionNavigationEventArgs(this._navigatinContext));
             viewModelBase.GoForwardCommand.CanExecuteChanged -= onCanExecuteChanged;
-
             Assert.False(result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
 
         [Fact]
@@ -289,6 +295,7 @@ namespace PrismBlankApp.Test.ViewModels
             var viewModelBase = this.showingStateInstanceFactory();
             viewModelBase.GoForwardCommand.Execute();
             this._regionNavigationJournal.Verify(rnj => rnj.GoForward());
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
 
         [Fact]
@@ -296,6 +303,7 @@ namespace PrismBlankApp.Test.ViewModels
         {
             var viewModelBase = this.createdStateInstanceFactory();
             var result = viewModelBase.GoForwardCommand.CanExecute();
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
             Assert.False(result);
         }
 
@@ -308,6 +316,7 @@ namespace PrismBlankApp.Test.ViewModels
             this._regionNavigationJournal.Setup(rnj => rnj.CanGoForward).Returns(canGoBackResult);
             var result = viewModelBase.GoForwardCommand.CanExecute();
             Assert.Equal(canGoBackResult, result);
+            viewModelBase.OnNavigatedFrom(this._navigatinContext);
         }
         #endregion
     }

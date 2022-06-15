@@ -3,7 +3,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Diagnostics;
-using Constants = PrismBlankApp.Constants;
+using Services = PrismBlankApp.Services;
 
 namespace PrismBlankApp.ViewModels
 {
